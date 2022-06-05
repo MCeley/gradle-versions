@@ -1,5 +1,9 @@
 package com.michaelceley.versions.model
 
+/**
+ * Breaks an AGP version down into component parts to allow for
+ * more granular comparison of versions.
+ */
 class AndroidToolsVersion(val versionString: String) : Comparable<AndroidToolsVersion> {
 
     var majorVersion: Int = 0

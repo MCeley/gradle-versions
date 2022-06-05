@@ -1,5 +1,8 @@
 package com.michaelceley.versions.model
 
+/**
+ * Aggregate class to hold all AGP and Gradle versions.
+ */
 class Versions(
     agpStable: AndroidToolsVersion?,
     agpRC: AndroidToolsVersion?,

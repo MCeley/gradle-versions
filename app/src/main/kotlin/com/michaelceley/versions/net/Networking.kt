@@ -6,6 +6,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.jaxb.JaxbConverterFactory
 
+/**
+ * Holder for all networking setup
+ */
 object Networking {
 
     private val retrofit: Retrofit by lazy {

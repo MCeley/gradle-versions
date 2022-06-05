@@ -1,6 +1,5 @@
 package com.michaelceley.versions.util
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.michaelceley.versions.model.AndroidGradlePlugin
 import com.michaelceley.versions.model.GradleVersionResponse
@@ -13,8 +12,16 @@ import java.io.IOException
 import java.io.PrintStream
 import java.nio.file.Files
 
+/**
+ * Utility class for gathering all AGP and Gradle versions and routing
+ * them to the console and/or a file.
+ */
 object VersionBuilder {
 
+    /**
+     * Gathers all the relevant Gradle and AGP versions, writes them out to the
+     * console, and optionally writes them to a file as JSON.
+     */
     fun exportVersions(outputDir: File? = null) {
         val versions = buildVersions()
 
@@ -36,6 +43,10 @@ object VersionBuilder {
 
     }
 
+    /**
+     * Makes all the necessary API calls to gather versions and aggregates them
+     * into a single object to be written out to the console and/or a file.
+     */
     private fun buildVersions() : Versions {
         val versionService = Networking.versionService
 
@@ -63,6 +74,10 @@ object VersionBuilder {
         )
     }
 
+    /**
+     * Helper function to write out all versions of Gradle and AGP to the console.
+     * @param versions The aggregated versions to write out.
+     */
     private fun printVersions(versions: Versions) {
         println("Gradle Versions")
         println("Current: ${versions.gradle.current?.version ?: "None"}")
@@ -79,6 +94,10 @@ object VersionBuilder {
         println("Alpha: ${versions.agp.alpha ?: "None"}")
     }
 
+    /**
+     * Helper function for making the Gradle version API call safely.
+     * @param call The API call to make.
+     */
     private fun getGradleVersion(call: Call<GradleVersionResponse?>) : GradleVersionResponse? {
         var response: Response<GradleVersionResponse?>? = null
         try {
