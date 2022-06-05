@@ -2,6 +2,8 @@ package com.michaelceley.versions.net.service
 
 import com.michaelceley.versions.model.AndroidToolsVersionResponse
 import com.michaelceley.versions.model.GradleVersionResponse
+import com.michaelceley.versions.net.converter.Json
+import com.michaelceley.versions.net.converter.Xml
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -12,6 +14,7 @@ interface VersionService {
      *
      * @return A [Call] object for executing the API call.
      */
+    @Json
     @GET("https://services.gradle.org/versions/nightly")
     fun getNightlyGradleVersion(): Call<GradleVersionResponse?>
 
@@ -20,6 +23,7 @@ interface VersionService {
      *
      * @return A [Call] object for executing the API call.
      */
+    @Json
     @GET("https://services.gradle.org/versions/release-nightly")
     fun getReleaseNightlyGradleVersion(): Call<GradleVersionResponse?>
 
@@ -28,6 +32,7 @@ interface VersionService {
      *
      * @return A [Call] object for executing the API call.
      */
+    @Json
     @GET("https://services.gradle.org/versions/release-candidate")
     fun getReleaseCandidateGradleVersion(): Call<GradleVersionResponse?>
 
@@ -36,6 +41,7 @@ interface VersionService {
      *
      * @return A [Call] object for executing the API call.
      */
+    @Json
     @GET("https://services.gradle.org/versions/current")
     fun getCurrentGradleVersion(): Call<GradleVersionResponse?>
 
@@ -45,6 +51,7 @@ interface VersionService {
      *
      * @return A [Call] object for executing the API call.
      */
+    @Xml
     @GET("https://dl.google.com/android/maven2/com/android/tools/build/group-index.xml")
     fun getAndroidToolsVersions(): Call<AndroidToolsVersionResponse?>
 }

@@ -1,6 +1,7 @@
 package com.michaelceley.versions.model
 
-class AndroidToolsVersion(version: String) : Comparable<AndroidToolsVersion> {
+class AndroidToolsVersion(val versionString: String) : Comparable<AndroidToolsVersion> {
+
     var majorVersion: Int = 0
     var minorVersion: Int = 0
     var patchVersion: Int = 0
@@ -19,11 +20,11 @@ class AndroidToolsVersion(version: String) : Comparable<AndroidToolsVersion> {
             }
         }
 
-        if(!version.contains("-")) {
-            parseVersions(version)
+        if(!versionString.contains("-")) {
+            parseVersions(versionString)
             type = VersionType.STABLE
         } else {
-            val splits = version.split("-")
+            val splits = versionString.split("-")
             if(splits.size == 2) {
                 parseVersions(splits[0])
                 type = if(splits[1].contains("alpha")) {

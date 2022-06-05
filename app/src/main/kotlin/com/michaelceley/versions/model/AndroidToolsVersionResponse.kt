@@ -1,8 +1,6 @@
 package com.michaelceley.versions.model
 
-import javax.xml.bind.annotation.XmlAttribute
-import javax.xml.bind.annotation.XmlElement
-import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.*
 
 /**
  * Model class for getting the current Android tools versions, specifically for the Gradle plugin.
@@ -17,20 +15,27 @@ import javax.xml.bind.annotation.XmlRootElement
  * </pre>
  */
 @XmlRootElement(name = "com.android.tools.build")
-data class AndroidToolsVersionResponse(
+@XmlAccessorType(XmlAccessType.FIELD)
+class AndroidToolsVersionResponse() {
     @XmlElement(name = "gradle")
     var gradlePlugin: AndroidGradlePlugin? = null
-)
+}
 
+@XmlAccessorType(XmlAccessType.FIELD)
 class AndroidGradlePlugin {
 
     @XmlAttribute
     var versions: String? = null
 
+    @XmlTransient
     private var latestStableVersion: AndroidToolsVersion? = null
+    @XmlTransient
     private var latestBetaVersion: AndroidToolsVersion? = null
+    @XmlTransient
     private var latestAlphaVersion: AndroidToolsVersion? = null
+    @XmlTransient
     private var latestRCVersion: AndroidToolsVersion? = null
+    @XmlTransient
     private var allVersions: List<AndroidToolsVersion>? = null
 
     private fun filterVersions() {
@@ -42,10 +47,10 @@ class AndroidGradlePlugin {
         allVersions?.let {
             for (version in it) {
                 when(version.type) {
-                    VersionType.ALPHA -> latestAlphaVersion = version
-                    VersionType.BETA -> latestBetaVersion = version
-                    VersionType.RC -> latestRCVersion = version
-                    VersionType.STABLE -> latestStableVersion = version
+                    VersionType.ALPHA -> if((latestAlphaVersion?.compareTo(version) ?: -1) < 0) latestAlphaVersion = version
+                    VersionType.BETA -> if((latestBetaVersion?.compareTo(version) ?: -1) < 0) latestBetaVersion = version
+                    VersionType.RC -> if((latestRCVersion?.compareTo(version) ?: -1) < 0) latestRCVersion = version
+                    VersionType.STABLE -> if((latestStableVersion?.compareTo(version) ?: -1) < 0) latestStableVersion = version
                 }
             }
         }

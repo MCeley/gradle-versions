@@ -3,17 +3,24 @@
  */
 package com.michaelceley.versions
 
+import com.michaelceley.versions.util.VersionBuilder
 import picocli.CommandLine
+import picocli.CommandLine.Option
+import java.io.File
 import kotlin.system.exitProcess
 
 class VersionFetcher : Runnable {
 
+    @Option(
+        names = ["-o", "--out"],
+        description = [ "Optional file location to output all AGP and Gradle versions."],
+        paramLabel = "OUTPUT"
+    )
+    var outputFile: File? = null
+
     override fun run() {
-        println("Make this thing do the thing.")
+        VersionBuilder.exportVersions()
     }
 }
 
-fun main(args: Array<String>) {
-    val exitCode = CommandLine(VersionFetcher()).execute(*args)
-    exitProcess(exitCode)
-}
+fun main(args: Array<String>): Unit = exitProcess(CommandLine(VersionFetcher()).execute(*args))
