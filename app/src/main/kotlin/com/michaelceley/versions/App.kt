@@ -13,13 +13,13 @@ class VersionFetcher : Runnable {
 
     @Option(
         names = ["-o", "--out"],
-        description = [ "Optional file location to output all AGP and Gradle versions."],
+        description = [ "Optional directory location to output all AGP and Gradle versions."],
         paramLabel = "OUTPUT"
     )
-    var outputFile: File? = null
+    var outputDir: File? = null
 
     override fun run() {
-        VersionBuilder.exportVersions()
+        VersionBuilder.exportVersions(outputDir)
     }
 }
 

@@ -1,6 +1,7 @@
 package com.michaelceley.versions.util
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.michaelceley.versions.model.AndroidGradlePlugin
 import com.michaelceley.versions.model.GradleVersionResponse
 import com.michaelceley.versions.model.Versions
@@ -9,30 +10,33 @@ import retrofit2.Call
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.io.PrintStream
+import java.nio.file.Files
 
 object VersionBuilder {
 
-    fun exportVersions(outputFile: File? = null) {
+    fun exportVersions(outputDir: File? = null) {
         val versions = buildVersions()
 
-        println("Gradle Versions")
-        println("Current: ${versions.gradle.current?.version ?: "None"}")
-        println("Release Candidate: ${versions.gradle.releaseCandidate?.version ?: "None"}")
-        println("Release Nightly: ${versions.gradle.releaseNightly?.version ?: "None"}")
-        println("Nightly: ${versions.gradle.nightly?.version ?: "None"}")
+        printVersions(versions)
 
-        println(" ")
+        if(outputDir != null) {
+            if (!outputDir.exists()) {
+                Files.createDirectory(outputDir.toPath())
+            } else if (!outputDir.isDirectory) {
+                println("${outputDir.absolutePath} is not a directory.")
+                return
+            }
 
-        println("AGP Versions")
-        println("Stable: ${versions.agp.stable ?: "None"}")
-        println("Release Candidate: ${versions.agp.releaseCandidate ?: "None"}")
-        println("Beta: ${versions.agp.beta ?: "None"}")
-        println("Alpha: ${versions.agp.alpha ?: "None"}")
+            val outputFile = File(outputDir, "versions.json")
+            PrintStream(Files.newOutputStream(outputFile.toPath())).use {
+                it.append(GsonBuilder().setPrettyPrinting().create().toJson(versions))
+            }
+        }
 
-        println(Gson().toJson(versions))
     }
 
-    fun buildVersions() : Versions {
+    private fun buildVersions() : Versions {
         val versionService = Networking.versionService
 
         val currentGradle = getGradleVersion(versionService.getCurrentGradleVersion())
@@ -57,6 +61,22 @@ object VersionBuilder {
             nightlyGradle,
             releaseNightlyGradle
         )
+    }
+
+    private fun printVersions(versions: Versions) {
+        println("Gradle Versions")
+        println("Current: ${versions.gradle.current?.version ?: "None"}")
+        println("Release Candidate: ${versions.gradle.releaseCandidate?.version ?: "None"}")
+        println("Release Nightly: ${versions.gradle.releaseNightly?.version ?: "None"}")
+        println("Nightly: ${versions.gradle.nightly?.version ?: "None"}")
+
+        println(" ")
+
+        println("AGP Versions")
+        println("Stable: ${versions.agp.stable ?: "None"}")
+        println("Release Candidate: ${versions.agp.releaseCandidate ?: "None"}")
+        println("Beta: ${versions.agp.beta ?: "None"}")
+        println("Alpha: ${versions.agp.alpha ?: "None"}")
     }
 
     private fun getGradleVersion(call: Call<GradleVersionResponse?>) : GradleVersionResponse? {
