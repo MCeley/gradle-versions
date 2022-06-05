@@ -3,13 +3,17 @@
  */
 package com.michaelceley.versions
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
+import picocli.CommandLine
+import kotlin.system.exitProcess
+
+class VersionFetcher : Runnable {
+
+    override fun run() {
+        println("Make this thing do the thing.")
+    }
 }
 
-fun main() {
-    println(App().greeting)
+fun main(args: Array<String>) {
+    val exitCode = CommandLine(VersionFetcher()).execute(*args)
+    exitProcess(exitCode)
 }
