@@ -1,11 +1,30 @@
 # Gradle Versions
 Grabs the latest versions of Gradle and AGP and prints the versions to the console.
 
+`./gradlew run`
+
 Can optionally specify an output directory to write the versions out as JSON.
 
 `./gradlew run --args="--out=/path/to/output/dir"`
 
-Sample output:
+Sample terminal output:
+
+```text
+Gradle Versions
+Current: 7.4.2
+Release Candidate: 7.5-rc-3
+Release Nightly: 7.5-20220628061702+0000
+Nightly: 7.6-20220628221912+0000
+ 
+AGP Versions
+Stable: 7.2.1
+Release Candidate: None
+Beta: 7.3.0-beta04
+Alpha: 7.4.0-alpha07
+```
+
+Sample JSON output:
+
 ```json
 {
   "gradle": {
