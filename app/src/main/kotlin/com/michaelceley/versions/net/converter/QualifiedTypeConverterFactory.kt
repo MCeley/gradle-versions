@@ -20,7 +20,6 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type
-import javax.annotation.Nullable
 
 /**
  * Converter factory that allows both JSON and XML serialization of retrofit
@@ -30,7 +29,6 @@ class QualifiedTypeConverterFactory(private val jsonFactory: Converter.Factory,
                                     private val xmlFactory: Converter.Factory)
     : Converter.Factory() {
 
-    @Nullable
     override fun responseBodyConverter(
         type: Type, annotations: Array<Annotation?>, retrofit: Retrofit
     ): Converter<ResponseBody, *>? {
@@ -45,7 +43,6 @@ class QualifiedTypeConverterFactory(private val jsonFactory: Converter.Factory,
         return null
     }
 
-    @Nullable
     override fun requestBodyConverter(
         type: Type,
         parameterAnnotations: Array<Annotation?>,
